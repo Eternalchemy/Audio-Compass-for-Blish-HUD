@@ -1,0 +1,19 @@
+{
+  "name": "Audio Compass",
+  "version": "0.1.0",
+  "namespace": "eternalchemy.audiocompass",
+  "package": "Audio Compass.dll",
+  "manifest_version": 1,
+
+  "description": "Plays audio signals when passing the cardinal directions.",
+  "dependencies": {
+    "bh.blishhud": ">=0.11.0"
+  },
+  "url": "https://github.com/Eternalchemy/Audio-Compass-for-Blish-HUD",
+  "contributors": [
+    {
+      "name": "eternalchemy",
+      "url": "https://github.com/eternalchemy"
+    }
+  ]
+}
