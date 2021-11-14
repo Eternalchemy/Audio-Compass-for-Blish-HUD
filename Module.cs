@@ -73,7 +73,6 @@ namespace Audio_Compass
         }
 
         private SettingEntry<bool> SuppressInCombat;
-        //private SettingEntry<float> SuppressionAngle; // distance from a cardinal point within which repetition is suppressed
         private CPoint[] CPoints;
 
         private float CamDirection;
@@ -125,37 +124,15 @@ namespace Audio_Compass
             base.OnModuleLoaded(e);
         }
 
-        protected void GoBeep()
-        {
-            if (SuppressInCombat.Value && GameService.Gw2Mumble.PlayerCharacter.IsInCombat) return;
-
-            for (int c = 0; c < 4; c++) CPoints[c].GoBeep(CamDirection, PrevCamDirection); // would use foreach but not sure if C# would provide refs
-
-            //for (int c = 0; c < 4; c++) // would use foreach but not sure if C# would provide refs
-            //{
-            //    if (CPoints[c].Action.Value == CPoint.EAction.Silent) continue;
-                
-            //    float dir = ShiftAngle(CamDirection, -CPoints[c].Angle); // normalize for the cardinal point to be at 0, makes for easier math
-            //    float prevdir = ShiftAngle(PrevCamDirection, -CPoints[c].Angle);
-            //    float absdir = Math.Abs(dir);
-            //    if (absdir > SuppressionAngle.Value) CPoints[c].SuppressionSentry = false;
-            //    if (CPoints[c].SuppressionSentry) continue;
-                
-            //    if (Math.Sign(dir) != Math.Sign(prevdir) && absdir < 90f) // passing a cardinal point and not leaping over the opposite one
-            //    {
-            //        Console.Beep(CPoints[c].BeepFrequency.Value, CPoints[c].BeepDuration.Value); // TODO: use a helper thread to make this asynchronous
-            //        CPoints[c].SuppressionSentry = true;
-            //    }
-            //}
-        }
-
         protected override void Update(GameTime gameTime)
         {
             PrevCamDirection = CamDirection;
             Vector3 PCAt = GameService.Gw2Mumble.PlayerCamera.Forward; // Forward is mapped XZY from the Mumble Link vector
             CamDirection = (float)(Math.Atan2(PCAt.X, PCAt.Y) * 180.0 / Math.PI);
             if (CamDirection == PrevCamDirection) return;
-            GoBeep();
+            if (SuppressInCombat.Value && GameService.Gw2Mumble.PlayerCharacter.IsInCombat) return;
+
+            for (int c = 0; c < 4; c++) CPoints[c].GoBeep(CamDirection, PrevCamDirection); // would use foreach but not sure if C# would provide refs
         }
 
         /// <inheritdoc />
